@@ -6,30 +6,11 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 04:56:08 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/07/06 05:06:26 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/07/07 02:05:12 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-static size_t	ft_countword(char *s, char c)
-{
-	size_t	count;
-
-	if (!s || !*s)
-		return (0);
-	count = 0;
-	while (*s)
-	{
-		while (*s == c && *s)
-			s++;
-		if (*s)
-			count++;
-		while (*s != c && *s)
-			s++;
-	}
-	return (count);
-}
 
 int	ft_strlen(char *str)
 {

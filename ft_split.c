@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 05:04:41 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/07/06 05:06:36 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/07/07 02:04:57 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static size_t	ft_countword(char *s, char c)
 	}
 	return (count);
 }
-static int	ft_split_norm(char **lst, char *s, char c, int word_len)
+
+static	int	ft_split_norm(char **lst, char *s, char c, int word_len)
 {
 	size_t	i;
 
