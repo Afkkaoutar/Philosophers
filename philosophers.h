@@ -6,35 +6,38 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:35 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/07/07 03:11:24 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:41:21 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
+# define MAX_PHILOSOPHERS 200
 
 # include <stdio.h>
 # include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include <limits.h>
+# include <sys/time.h>
 
-typedef struct s_philosophers
-{
-	pthread_t	threads;
-	int			les_philosophers;
+typedef struct s_philosophers {
+    pthread_t threads;
+    int id;
+    int number_of_philosophers;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int number_of_meal;
+    long long last_meal;
+    pthread_mutex_t fork;
+    pthread_mutex_t *print;
+    pthread_mutex_t death;
+    struct s_philosophers *next;
+} t_philosophers;
 
-}	t_philosophers;
-
-char	*ft_strdup(char *s);
-char	*ft_join(char *s1, char *s2);
-char	*ft_substr(char *s, unsigned int start, size_t len);
-char	**ft_split(char *s, char c);
-int		ft_strlen(char *str);
-int		arg_check(char **av);
-int		isdigit(int c);
-int		isspace(int c);
-char	*ft_strchr(char *s, int c);
+int check_arg(char *arg);
+int valid_args(char **av);
+long long timeinmilliseconds(void);
 
 #endif
