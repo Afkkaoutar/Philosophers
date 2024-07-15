@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:35 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/07/10 14:41:21 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/07/15 01:41:52 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ typedef struct s_philosophers {
     int time_to_sleep;
     int number_of_meal;
     long long last_meal;
-    pthread_mutex_t fork;
+    pthread_mutex_t *fork;
     pthread_mutex_t *print;
-    pthread_mutex_t death;
+    pthread_mutex_t *death;
     struct s_philosophers *next;
 } t_philosophers;
 
-int check_arg(char *arg);
-int valid_args(char **av);
-long long timeinmilliseconds(void);
+void    *routine(void *routin);
+int	check_death(void *d);
+int	check(t_philosophers *program);
+void	action(int action, t_philosophers *program);
+void	ft_print(t_philosophers *program, char *str);
 
 #endif

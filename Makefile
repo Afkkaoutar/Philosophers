@@ -4,7 +4,7 @@ CFLAGS= -Wall -Wextra -Werror -pthread
 
 HDR = philosophers.h
 
-SRC = philosophers.c  
+SRC = philosophers.c  routine.c
 
 OBJ = $(SRC:.c=.o)
 
