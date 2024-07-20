@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:35 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/07/15 01:41:52 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/07/20 16:49:00 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,5 @@ typedef struct s_philosophers {
     struct s_philosophers *next;
 } t_philosophers;
 
-void    *routine(void *routin);
-int	check_death(void *d);
-int	check(t_philosophers *program);
-void	action(int action, t_philosophers *program);
-void	ft_print(t_philosophers *program, char *str);
 
 #endif
