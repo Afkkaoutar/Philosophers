@@ -2,9 +2,9 @@ CC= cc
 
 CFLAGS= -Wall -Wextra -Werror -pthread
 
-HDR = philosophers.h
+HDR = philosophers.h 
 
-SRC = philosophers.c 
+SRC = philosophers.c utils.c routine.c
 
 OBJ = $(SRC:.c=.o)
 
