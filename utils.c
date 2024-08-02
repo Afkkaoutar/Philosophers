@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:39:32 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/02 18:48:41 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:58:54 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,32 @@ long long timeinmilliseconds(void)
     if (!start)
         start = current_time;
     return (current_time - start);
+}
+
+int check_death(void *d)
+{
+    int how_many;
+    t_philosophers *philosophers = (t_philosophers *)d;
+
+    how_many = philosophers->number_of_philosophers;
+    while (1)
+    {
+        if (check(philosophers) == 1)
+            return (philosophers->id);
+        pthread_mutex_lock(philosophers->death);
+        while (philosophers->number_of_meal != -1 && philosophers->number_of_meal == 0)
+        {
+            how_many--;
+            if (how_many == 0)
+                return (0);
+            philosophers = philosophers->next;
+        }
+        pthread_mutex_unlock(philosophers->death);
+        how_many = philosophers->number_of_philosophers;
+        philosophers = philosophers->next;
+    }
+    usleep(100);
+    return (-1);
 }
 
 void init_philosophers(t_philosophers *philo, int num, char **av)

@@ -6,47 +6,11 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:19 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/02 18:43:44 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:58:16 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-void *routine(void *rou)
-{
-    t_philosophers *philo = (t_philosophers *)rou;
-
-    if (philo->id % 2 == 1)
-        usleep(philo->time_to_eat * 1000);
-
-    while (1)
-    {
-        pthread_mutex_lock(philo->fork);
-        ft_print(philo, "has taken a fork");
-
-        pthread_mutex_lock(philo->next->fork);
-        ft_print(philo, "has taken a fork");
-
-        pthread_mutex_lock(philo->death);
-        philo->last_meal = timeinmilliseconds();
-        if (philo->number_of_meal != -1)
-            philo->number_of_meal--;
-        pthread_mutex_unlock(philo->death);
-
-        ft_print(philo, "is eating");
-        action(philo->time_to_eat, philo);
-
-        pthread_mutex_unlock(philo->fork);
-        pthread_mutex_unlock(philo->next->fork);
-
-        ft_print(philo, "is sleeping");
-        action(philo->time_to_sleep, philo);
-
-        ft_print(philo, "is thinking");
-    }
-
-    return NULL;
-}
 
 void creat_thread(t_philosophers *philo)
 {

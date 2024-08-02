@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:35 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/02 18:47:14 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:59:31 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_philosophers {
     struct s_philosophers *next;
 } t_philosophers;
 
+void *routine(void *rou);
 long long timeinmilliseconds(void);
 void init_philosophers(t_philosophers *philo, int num, char **av);
 void free_resources(t_philosophers *philo, int num);

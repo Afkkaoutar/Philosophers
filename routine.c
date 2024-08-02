@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:44:38 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/02 18:47:03 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:58:45 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,38 @@ void action(int action, t_philosophers *philo)
     pthread_mutex_unlock(philo->death);
 }
 
-int check_death(void *d)
+void *routine(void *rou)
 {
-    int how_many;
-    t_philosophers *philosophers = (t_philosophers *)d;
+    t_philosophers *philo = (t_philosophers *)rou;
 
-    how_many = philosophers->number_of_philosophers;
+    if (philo->id % 2 == 1)
+        usleep(philo->time_to_eat * 1000);
+
     while (1)
     {
-        if (check(philosophers) == 1)
-            return (philosophers->id);
-        pthread_mutex_lock(philosophers->death);
-        while (philosophers->number_of_meal != -1 && philosophers->number_of_meal == 0)
-        {
-            how_many--;
-            if (how_many == 0)
-                return (0);
-            philosophers = philosophers->next;
-        }
-        pthread_mutex_unlock(philosophers->death);
-        how_many = philosophers->number_of_philosophers;
-        philosophers = philosophers->next;
+        pthread_mutex_lock(philo->fork);
+        ft_print(philo, "has taken a fork");
+
+        pthread_mutex_lock(philo->next->fork);
+        ft_print(philo, "has taken a fork");
+
+        pthread_mutex_lock(philo->death);
+        philo->last_meal = timeinmilliseconds();
+        if (philo->number_of_meal != -1)
+            philo->number_of_meal--;
+        pthread_mutex_unlock(philo->death);
+
+        ft_print(philo, "is eating");
+        action(philo->time_to_eat, philo);
+
+        pthread_mutex_unlock(philo->fork);
+        pthread_mutex_unlock(philo->next->fork);
+
+        ft_print(philo, "is sleeping");
+        action(philo->time_to_sleep, philo);
+
+        ft_print(philo, "is thinking");
     }
-    usleep(100);
-    return (-1);
+
+    return NULL;
 }
