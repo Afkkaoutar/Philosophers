@@ -6,111 +6,116 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:39:32 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/02 18:58:54 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:33:16 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo.h"
 
-long long timeinmilliseconds(void) 
+long	long	timeinmilliseconds(void)
 {
-    struct timeval tv;
-    long long current_time;
-    static long long start;
+	struct timeval		tv;
+	long long			current_time;
+	static long long	start;
 
-    gettimeofday(&tv, NULL);
-    current_time = (((long long)tv.tv_sec) * 1000) + (tv.tv_usec / 1000);
-    if (!start)
-        start = current_time;
-    return (current_time - start);
+	gettimeofday(&tv, NULL);
+	current_time = (((long long)tv.tv_sec) * 1000) + (tv.tv_usec / 1000);
+	if (!start)
+		start = current_time;
+	return (current_time - start);
 }
 
-int check_death(void *d)
+int	check_death(void *d)
 {
-    int how_many;
-    t_philosophers *philosophers = (t_philosophers *)d;
+	int				how_many;
+	t_philosophers	*philosophers;
 
-    how_many = philosophers->number_of_philosophers;
-    while (1)
-    {
-        if (check(philosophers) == 1)
-            return (philosophers->id);
-        pthread_mutex_lock(philosophers->death);
-        while (philosophers->number_of_meal != -1 && philosophers->number_of_meal == 0)
-        {
-            how_many--;
-            if (how_many == 0)
-                return (0);
-            philosophers = philosophers->next;
-        }
-        pthread_mutex_unlock(philosophers->death);
-        how_many = philosophers->number_of_philosophers;
-        philosophers = philosophers->next;
-    }
-    usleep(100);
-    return (-1);
+	philosophers = (t_philosophers *)d;
+	how_many = philosophers->number_of_philosophers;
+	while (1)
+	{
+		if (check(philosophers) == 1)
+			return (philosophers->id);
+		pthread_mutex_lock(philosophers->death);
+		while (philosophers->number_of_meal != -1
+			&& philosophers->number_of_meal == 0)
+		{
+			how_many--;
+			if (how_many == 0)
+				return (0);
+			philosophers = philosophers->next;
+		}
+		pthread_mutex_unlock(philosophers->death);
+		how_many = philosophers->number_of_philosophers;
+		philosophers = philosophers->next;
+	}
+	usleep(100);
+	return (-1);
 }
 
-void init_philosophers(t_philosophers *philo, int num, char **av)
+void	init_philosophers(t_philosophers *philo, int num, char **av)
 {
-    int i;
+	int	i;
 
-    for (i = 0; i < num; i++)
-    {
-        philo[i].id = i + 1;
-        philo[i].number_of_philosophers = num;
-        philo[i].time_to_die = ft_atoi(av[2]);
-        philo[i].time_to_eat = ft_atoi(av[3]);
-        philo[i].time_to_sleep = ft_atoi(av[4]);
-        philo[i].number_of_meal = (av[5] != NULL) ? ft_atoi(av[5]) : -1;
-        philo[i].last_meal = timeinmilliseconds();
-        
-        // Allocation et initialisation des mutex
-        philo[i].fork = malloc(sizeof(pthread_mutex_t));
-        if (!philo[i].fork)
-        {
-            perror("Failed to allocate memory for fork mutex");
-            exit(1);
-        }
-        pthread_mutex_init(philo[i].fork, NULL);
-
-        if (i == 0)
-        {
-            philo[i].print = malloc(sizeof(pthread_mutex_t));
-            philo[i].death = malloc(sizeof(pthread_mutex_t));
-            if (!philo[i].print || !philo[i].death)
-            {
-                perror("Failed to allocate memory for mutexes");
-                exit(1);
-            }
-            pthread_mutex_init(philo[i].print, NULL);
-            pthread_mutex_init(philo[i].death, NULL);
-        }
-        else
-        {
-            philo[i].print = philo[0].print;
-            philo[i].death = philo[0].death;
-        }
-
-        if (i == num - 1)
-            philo[i].next = &philo[0];
-        else
-            philo[i].next = &philo[i + 1];
-    }
+	i = 0;
+	while (i < num)
+	{
+		philo[i].id = i + 1;
+		philo[i].number_of_philosophers = num;
+		philo[i].time_to_die = ft_atoi(av[2]);
+		philo[i].time_to_eat = ft_atoi(av[3]);
+		philo[i].time_to_sleep = ft_atoi(av[4]);
+		if (av[5] != NULL)
+			philo[i].number_of_meal = ft_atoi(av[5]);
+		else
+			philo[i].number_of_meal = -1;
+		philo[i].last_meal = timeinmilliseconds();
+		philo[i].fork = malloc(sizeof(pthread_mutex_t));
+		if (!philo[i].fork)
+		{
+			perror("Failed to allocate memory for fork mutex");
+			exit(1);
+		}
+		pthread_mutex_init(philo[i].fork, NULL);
+		if (i == 0)
+		{
+			philo[i].print = malloc(sizeof(pthread_mutex_t));
+			philo[i].death = malloc(sizeof(pthread_mutex_t));
+			if (!philo[i].print || !philo[i].death)
+			{
+				perror("Failed to allocate memory for mutexes");
+				exit(1);
+			}
+			pthread_mutex_init(philo[i].print, NULL);
+			pthread_mutex_init(philo[i].death, NULL);
+		}
+		else
+		{
+			philo[i].print = philo[0].print;
+			philo[i].death = philo[0].death;
+		}
+		if (i == num - 1)
+			philo[i].next = &philo[0];
+		else
+			philo[i].next = &philo[i + 1];
+		i++;
+	}
 }
 
-void free_resources(t_philosophers *philo, int num)
+void	free_resources(t_philosophers *philo, int num)
 {
-    int i;
+	int	i;
 
-    for (i = 0; i < num; i++)
-    {
-        pthread_mutex_destroy(philo[i].fork);
-        free(philo[i].fork);
-    }
-    pthread_mutex_destroy(philo[0].print);
-    pthread_mutex_destroy(philo[0].death);
-    free(philo[0].print);
-    free(philo[0].death);
-    free(philo);
+	i = 0;
+	while (i < num)
+	{
+		pthread_mutex_destroy(philo[i].fork);
+		free(philo[i].fork);
+		i++;
+	}
+	pthread_mutex_destroy(philo[0].print);
+	pthread_mutex_destroy(philo[0].death);
+	free(philo[0].print);
+	free(philo[0].death);
+	free(philo);
 }

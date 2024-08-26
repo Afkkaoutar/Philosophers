@@ -1,16 +1,16 @@
 CC= cc
 
-CFLAGS= -Wall -Wextra -Werror -pthread
+CFLAGS= -Wall -Wextra -Werror -pthread ##-fsanitize=thread
 
-HDR = philosophers.h 
+HDR = philo.h 
 
-SRC = philosophers.c utils.c routine.c
+SRC = philo.c utils.c routine.c
 
 OBJ = $(SRC:.c=.o)
 
-NAME = philosophers
+NAME = philo
 
-all: philosophers
+all: $(NAME)
 
 $(NAME) : $(OBJ)
 	$(CC)  $(CFLAGS) $(OBJ) -o $(NAME)
