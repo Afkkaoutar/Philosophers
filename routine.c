@@ -6,11 +6,24 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:44:38 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/26 22:24:51 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:10:48 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long	long	timeinmilliseconds(void)
+{
+	struct timeval		tv;
+	long long			current_time;
+	static long long	start;
+
+	gettimeofday(&tv, NULL);
+	current_time = (((long long)tv.tv_sec) * 1000) + (tv.tv_usec / 1000);
+	if (!start)
+		start = current_time;
+	return (current_time - start);
+}
 
 void	ft_print(t_philosophers *philo, char *str)
 {
@@ -27,6 +40,7 @@ int	check(t_philosophers *philo)
 	pthread_mutex_lock(philo->death);
 	if (timeinmilliseconds() - philo->last_meal > philo->time_to_die)
 	{
+		pthread_mutex_lock(philo->print);
 		pthread_mutex_unlock(philo->death);
 		return (1);
 	}
