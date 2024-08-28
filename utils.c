@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:39:32 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/28 04:10:34 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:31:02 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	check_death(void *d)
 		if (check(philosophers) == 1)
 			return (philosophers->id);
 		pthread_mutex_lock(philosophers->death);
-		while (philosophers->number_of_meal != -1
-			&& philosophers->number_of_meal == 0)
+		while (philosophers->number_of_times_each_philosopher_must_eat != -1
+			&& philosophers->number_of_times_each_philosopher_must_eat == 0)
 		{
 			how_many--;
 			if (how_many == 0)
@@ -48,9 +48,9 @@ void	init_individual(t_philosophers *philo, int i, int num, char **av)
 	philo[i].time_to_eat = ft_atoi(av[3]);
 	philo[i].time_to_sleep = ft_atoi(av[4]);
 	if (av[5] != NULL)
-		philo[i].number_of_meal = ft_atoi(av[5]);
+		philo[i].number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	else
-		philo[i].number_of_meal = -1;
+		philo[i].number_of_times_each_philosopher_must_eat = -1;
 	philo[i].last_meal = timeinmilliseconds();
 	philo[i].fork = malloc(sizeof(pthread_mutex_t));
 	if (!philo[i].fork)

@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 18:44:38 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/28 04:10:48 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:30:25 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	*routine(void *rou)
 		ft_print(philo, "has taken a fork");
 		pthread_mutex_lock(philo->death);
 		philo->last_meal = timeinmilliseconds();
-		if (philo->number_of_meal != -1)
-			philo->number_of_meal--;
+		if (philo->number_of_times_each_philosopher_must_eat != -1)
+			philo->number_of_times_each_philosopher_must_eat--;
 		pthread_mutex_unlock(philo->death);
 		ft_print(philo, "is eating");
 		action(philo->time_to_eat, philo);

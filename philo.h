@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:35 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/26 22:34:08 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:30:00 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_philosophers
 	int						time_to_die;
 	int						time_to_eat;
 	int						time_to_sleep;
-	int						number_of_meal;
+	int						number_of_times_each_philosopher_must_eat;
 	long long				last_meal;
 	pthread_mutex_t			*fork;
 	pthread_mutex_t			*print;
