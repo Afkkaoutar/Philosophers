@@ -6,7 +6,7 @@
 /*   By: kaafkhar <kaafkhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 06:28:19 by kaafkhar          #+#    #+#             */
-/*   Updated: 2024/08/28 04:32:08 by kaafkhar         ###   ########.fr       */
+/*   Updated: 2024/09/02 04:31:38 by kaafkhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	check_args(char **av)
 	if (ft_atoi(av[4]) <= 0 || check_arg_content(av[4]) == 1)
 		return (write(2, "Invalid time to sleep\n", 23), 1);
 	if (av[5] && (ft_atoi(av[5]) < 0 || check_arg_content(av[5]) == 1))
-		return (write(2, "Invalid must eat\n", 51), 1);
+		return (write(2, "Invalid number\n", 16), 1);
 	return (0);
 }
 
@@ -100,7 +100,7 @@ int	main(int ac, char **av)
 	creat_thread(philo);
 	dead = check_death(philo);
 	if (dead != 0)
-		printf("%lld philo %d is died\n", timeinmilliseconds(), dead);
+		printf("%lld philo %d is dead\n", timeinmilliseconds(), dead);
 	free_resources(philo, num_philosophers);
 	return (0);
 }
